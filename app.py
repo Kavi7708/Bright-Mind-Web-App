@@ -9,22 +9,20 @@ with open('static/config.json', 'r') as C:
     params = json.load(C)["params"]
 
 app = Flask(__name__, template_folder='template')
-app.config['SECRET_KEY'] = 'lucifer'
+app.config['SECRET_KEY'] = 'supersecretkey'
 
 # 2. Database Connection (XAMPP MySQL)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/Bright_Mind'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-# 3. Upload Folders Setup
-# Isse Syllabus, Notes, Paper aur Ebook ke liye alag folders apne aap ban jayenge
-# Update your existing UPLOAD_FOLDERS dictionary:
+
 UPLOAD_FOLDERS = {
     'Syllabus': 'static/syllabus',
     'Notes': 'static/notes',
     'Paper': 'static/paper',
     'Ebook': 'static/ebook',
-    'Covers': 'static/book_covers'  # <-- Add this line for the new images
+    'Covers': 'static/book_covers' 
 }
 for folder in UPLOAD_FOLDERS.values():
     if not os.path.exists(folder):
@@ -40,7 +38,7 @@ class Resource(db.Model):
     branch = db.Column(db.String(50), nullable=False)
     semester = db.Column(db.Integer, nullable=False)
     subject = db.Column(db.String(50))
-    year = db.Column(db.Date) 
+    year = db.Column(db.String(20), nullable=True)
     file_url = db.Column(db.String(255), nullable=False)
 
 class Notes(db.Model):
@@ -58,10 +56,8 @@ class Video(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
-    url = db.Column(db.String(255), nullable=False) # YouTube Embed Link
+    url = db.Column(db.String(255), nullable=False)
 
-# Yeh aapki purani classes hain (Resource, Notes, Video)...
-# Unke theek neeche yeh 2 nayi classes add karein:
 
 class Paper(db.Model):
     __tablename__ = 'papers'
@@ -70,8 +66,8 @@ class Paper(db.Model):
     category = db.Column(db.String(100), default='Paper')
     branch = db.Column(db.String(50), nullable=False)
     semester = db.Column(db.Integer, nullable=False)
-    subject = db.Column(db.String(50)) # <-- ADD THIS LINE
-    year = db.Column(db.Date)
+    subject = db.Column(db.String(50))
+    year = db.Column(db.String(20),nullable=True)
     file_url = db.Column(db.String(255), nullable=False)
 
 class Ebook(db.Model):
@@ -86,15 +82,60 @@ class Ebook(db.Model):
     file_url = db.Column(db.String(255), nullable=False) # Stores the PDF
     cover_url = db.Column(db.String(255), nullable=False) # <-- New: Stores the Cover Image
 
-# Database Tables Create Karein
+
 with app.app_context():
     db.create_all()
 
-# --- ROUTES ---
 
+#======= ROUTES========
+
+@app.route('/contribute')
+def contribute():
+    return render_template('contribute.html', params=params)
+
+@app.route('/syllabus')
+def syllabus():
+    items = Resource.query.filter_by(category='Syllabus').all()
+    return render_template('syllabus.html', syllabuses=items, params=params)
+
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
+    flash("Logged out successfully!", "success")
+    return redirect('/login')
+
+@app.route('/about')
+def about():
+    return render_template('about.html', params=params)
+
+@app.route('/notes')
+def notes():
+    items = Notes.query.all()
+    return render_template('Notes.html', all_notes=items, params=params)
+
+@app.route('/video')
+def video():
+    vids = Video.query.all()
+    return render_template('video.html', videos=vids, params=params)
+
+@app.route('/video_player/<int:video_id>')
+def video_player(video_id):
+    vid = Video.query.get_or_404(video_id)
+    return render_template('video_player.html', video=vid, params=params)
+
+@app.route('/paper')
+def paper():
+    items = Paper.query.filter_by(category='Paper').all()
+    return render_template("paper.html", papers=items, params=params)
+
+@app.route('/book')
+def book():
+    items = Ebook.query.filter_by(category='Ebook').all()
+    return render_template('Book.html', books=items, params=params)
+    
 @app.route('/')
 def home():
-    # Recently Added Section: Teeno tables se 3-3 latest records uthana
+   
     res = Resource.query.order_by(Resource.id.desc()).limit(3).all()
     nts = Notes.query.order_by(Notes.id.desc()).limit(3).all()
     vds = Video.query.order_by(Video.id.desc()).limit(3).all()
@@ -121,7 +162,7 @@ def admin_upload():
             upload_path = os.path.join('static', category.lower())
             file.save(os.path.join(upload_path, filename))
 
-            # --- NAYA LOGIC: Alag alag tables mein bhejne ke liye ---
+         
             if category == 'Notes':
                 new_item = Notes(title=request.form['title'], branch=request.form['branch'], semester=request.form['semester'], subject=request.form['subject'], file_url=filename)
                 flash("Notes uploaded successfully!", "success")
@@ -137,7 +178,7 @@ def admin_upload():
                 flash("Paper uploaded successfully!", "success")
                  
             elif category == 'Syllabus':
-    # Agar Syllabus hai toh Resource table mein jayega
+   
                 new_item = Resource(
                     title=request.form['title'], 
                     category='Syllabus', 
@@ -153,7 +194,6 @@ def admin_upload():
                 return redirect('/dashboard')
             db.session.add(new_item)
             db.session.commit()
-            flash(f"{category} uploaded successfully!", "success")
         return redirect('/dashboard')
     return redirect('/login')
 
@@ -174,11 +214,11 @@ def admin_upload_ebook():
             pdf_filename = secure_filename(pdf_file.filename)
             cover_filename = secure_filename(cover_image.filename)
             
-            # Save files to their respective folders
+            
             pdf_file.save(os.path.join('static/ebook', pdf_filename))
             cover_image.save(os.path.join('static/book_covers', cover_filename))
             
-            # Save to database
+           
             new_ebook = Ebook(
                 title=title, 
                 description=description,
@@ -197,55 +237,6 @@ def admin_upload_ebook():
         return redirect('/dashboard')
     return redirect('/login')
 
-# VIDEO UPLOAD: Sirf YouTube link ke liye
-@app.route('/add_video', methods=['POST'])
-def add_video():
-    if 'user' in session and session['user'] == params['admin_user']:
-        new_vid = Video(
-            title=request.form['title'], 
-            description=request.form['description'], 
-            url=request.form['url']
-        )
-        db.session.add(new_vid)
-        db.session.commit()
-        flash("Video added successfully!", "success")
-        return redirect('/dashboard')
-    return redirect('/login')
-
-
-@app.route('/contribute')
-def contribute():
-    return render_template('contribute.html', params=params)
-
-@app.route('/syllabus')
-def syllabus():
-    items = Resource.query.filter_by(category='Syllabus').all()
-    return render_template('syllabus.html', syllabuses=items, params=params)
-
-@app.route('/notes')
-def notes():
-    items = Notes.query.all()
-    return render_template('Notes.html', all_notes=items, params=params)
-
-@app.route('/video')
-def video():
-    vids = Video.query.all()
-    return render_template('video.html', videos=vids, params=params)
-
-@app.route('/video_player/<int:video_id>')
-def video_player(video_id):
-    vid = Video.query.get_or_404(video_id)
-    return render_template('video_player.html', video=vid, params=params)
-
-@app.route('/paper')
-def paper():
-    items = Paper.query.filter_by(category='Paper').all()
-    return render_template("paper.html", papers=items, params=params)
-
-@app.route('/book')
-def book():
-    items = Ebook.query.filter_by(category='Ebook').all()
-    return render_template('Book.html', books=items, params=params)
 
 # --- AUTHENTICATION & DASHBOARD ---
 
@@ -273,15 +264,7 @@ def login():
     
     return render_template('login.html', params=params)
 
-@app.route('/logout')
-def logout():
-    session.pop('user', None)
-    flash("Logged out successfully!", "success")
-    return redirect('/login')
 
-@app.route('/about')
-def about():
-    return render_template('about.html', params=params)
 
 if __name__ == '__main__':
     app.run(debug=True)
