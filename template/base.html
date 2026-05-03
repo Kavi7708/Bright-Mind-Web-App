@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bright Mind</title>
+  <script src="https://kit.fontawesome.com/04e9f2c468.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
+  <script src="{{ url_for('static', filename='bootstrap.bundle.min.js') }}"
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+    crossorigin="anonymous"></script>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='assets/favi.ico') }}">
+</head>
+
+<body>
+  <section class="one">
+    <div id="nav">
+      <span id="profile">
+        <img src="{{ url_for('static', filename='assets/logo.jpeg') }}" alt="Logo" />
+        <h2>BRIGHT MIND</h2>
+      </span>
+      <span><i id="share" class="fa-solid fa-share-nodes"></i></span>
+    </div>
+  </section>
+  {% with messages = get_flashed_messages(with_categories=true) %} {% if
+  messages %}
+  <div class="flash-toast-container">
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }} alert-dismissible fade show shadow-lg custom-toast" role="alert">
+      <div class="toast-content">
+        {% if category == 'success' %}
+        <i class="fa-solid fa-circle-check toast-icon"></i>
+        {% else %}
+        <i class="fa-solid fa-circle-exclamation toast-icon"></i>
+        {% endif %}
+        <span class="toast-message">{{ message }}</span>
+      </div>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %} {% endwith %} {% block content %} {% endblock %}
+  <div class="status_bar">
+    <a href="/">
+      <span>
+        <i class="fa-solid fa-house"></i>
+        <p class="stext">HOME</p>
+      </span></a>
+    <a href="/notes">
+      <span>
+        <img src="https://cdn-icons-png.flaticon.com/128/768/768818.png" height="24px" width="24px"
+          style="margin-bottom: 4px" alt="" />
+        <p class="stext">NOTES</p>
+      </span></a>
+    <a href="/about">
+      <span>
+        <i class="fa-solid fa-users"></i>
+        <p class="stext">ABOUT US</p>
+      </span></a>
+    <a href="/login">
+      <span>
+        <i class="fa-solid fa-circle-user"></i>
+        <p class="stext">ADMIN</p>
+      </span></a>
+  </div>
+</body>
+
+</html>

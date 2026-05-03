@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="main_sec">
+        <div id="welcome">
+            <h1>NOTES SECTION</h1>    
+        </div>
+        <div class="home_img"><img src="{{url_for('static',filename='assets/civil.svg')}}" alt="">
+        </div>
+</section>
+<div class="container mt-4">
+    {% for sem, items in all_notes|groupby('semester') %}
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+                <i class="fa-solid fa-file-pdf fa-3x me-3" style="color: #e53e3e;"></i>
+                <div>
+                    <h3 class="mb-0 fs-5 fw-bold text-dark">{{ sem }}ST SEMESTER</h3>
+                    <p class="text-muted mb-0 small">SUBJECTS</p>
+                </div>
+            </div>
+            <div class="row g-2">
+                {% for note in items %}
+                <div class="col-6 col-md-4">
+                    <a href="static/notes/{{ note.file_url }}" target="_blank">
+                        <div class="items">
+                            {{ note.subject | upper }}
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

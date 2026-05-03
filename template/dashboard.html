@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="admin-panel">
+
+
+    <main class="dashboard-content">
+        <div class="content-header" style="margin-bottom: 30px;">
+            <h2 style="font-size: 28px; color: #1e293b; margin-bottom: 8px;">Admin Dashboard</h2>
+            <p style="color: #64748b;">Manage and upload resources directly to the database.</p>
+           
+        </div>
+
+        <div id="file-section" class="review-section">
+            <div class="review-header"><h3>Upload Resource (PDF/Files)</h3></div>
+            <form action="/admin/upload" method="POST" enctype="multipart/form-data" class="pro-form">
+                <select name="category" required>
+                    <option value="" disabled selected>Select Category</option>
+                    <option value="Notes">Notes</option>
+                    <option value="Syllabus">Syllabus</option>
+                    <option value="Paper">Paper</option>
+                    <option value="Ebook">Ebook</option>
+                </select>
+                <input type="text" name="title" placeholder="Title" required>
+                <input type="text" name="branch" placeholder="Branch">
+                <input type="number" name="semester" placeholder="Semester">
+                <input type="text" name="subject" placeholder="Subject">
+                <div class="file-group">
+                    <label>Resource File (PDF)</label>
+                    <input type="file" name="file" accept=".pdf" required>
+                </div>
+                <button type="submit" class="btn approve full-width">Upload & Save</button>
+            </form>
+        </div>
+
+        <div id="video-section" class="review-section">
+            <div class="review-header"><h3>Add YouTube Video</h3></div>
+            <form action="/add_video" method="POST" class="pro-form">
+                <input type="text" name="title" placeholder="Video Title" class="full-width" required>
+                <textarea name="description" placeholder="Description" rows="2" class="full-width" required></textarea>
+                <input type="url" name="url" placeholder="Embed URL (https://www.youtube.com/embed/...)" class="full-width" required>
+                <button type="submit" class="btn approve full-width">Add Video</button>
+            </form>
+        </div>
+
+        <div id="ebook-section" class="review-section">
+            <div class="review-header"><h3>Upload New E-Book</h3></div>
+            <form action="/admin/upload_ebook" method="POST" enctype="multipart/form-data" class="pro-form">
+                <input type="text" name="title" placeholder="Book Title" required>
+                <input type="text" name="subject" placeholder="Subject" required>
+                <input type="text" name="branch" placeholder="Branch (e.g. CSE)" required>
+                <input type="number" name="semester" placeholder="Semester" required>
+                
+                <textarea name="description" placeholder="Brief info about the book..." rows="2" class="full-width"></textarea>
+                
+                <div class="file-group">
+                    <label>Upload PDF File</label>
+                    <input type="file" name="pdf_file" accept=".pdf" required>
+                </div>
+                <div class="file-group">
+                    <label>Upload Cover Image</label>
+                    <input type="file" name="cover_image" accept="image/*" required>
+                </div>
+
+                <button type="submit" class="btn approve full-width">Publish E-Book</button>
+            </form>
+        </div>
+    </main>
+</section>
+ <div class="logout-section">
+                <a href="/logout" class="btn logout">Logout</a>
+            </div>
+{% endblock %}

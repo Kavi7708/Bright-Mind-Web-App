@@ -1,0 +1,86 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="about-wrapper mt-5">
+  <section class="about-info mb-5">
+    <div class="row g-4">
+      <div class="col-md-6">
+        <div class="card h-100 info-card">
+          <div class="card-body">
+            <h3 class="card-title">
+              <i class="fa-solid fa-laptop-code"></i> About Our Platform
+            </h3>
+            <p class="card-text text-muted mt-3" style="line-height: 1.7">
+              Bright Mind is a comprehensive educational platform designed
+              specifically for students to easily access syllabus documents,
+              previous year papers, e-books, and study notes. We bridge the gap
+              between resources and learners, creating a centralized hub for
+              your academic success.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card h-100 info-card">
+          <div class="card-body">
+            <h3 class="card-title">
+              <i class="fa-solid fa-bullseye"></i> Main Objective
+            </h3>
+            <p class="card-text text-muted mt-3" style="line-height: 1.7">
+              Our goal is to simplify the learning journey. By organizing
+              scattered academic materials into a single, user-friendly
+              interface, we aim to save students valuable time, reduce exam
+              stress, and foster a highly collaborative environment for modern
+              education.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <br /><br /><br />
+  <section class="about-devs text-center mb-5 mt-5">
+    <h2 class="fw-bold mb-2" style="color: #1e293b">Meet the Developers</h2>
+    <p class="text-muted mb-4">The minds behind Bright Mind</p>
+    <div class="dev-grid">
+      <div class="dev-card">
+      <div class="dev-img-placeholder"><img    src="{{url_for('static',filename='assets/kavi_img.jpeg')}}" alt=""></div>
+        <h4 class="mt-4 mb-1 fw-bold text-dark">KAVI</h4>
+        <p
+          class="text-muted small fw-semibold"
+          style="color: #4f46e5 !important"
+        >
+          Backend Engineer
+        </p>
+        <p class="text-muted small mt-2">
+          Handles the database, server logic, and robust Flask routing.
+        </p>
+      </div>
+      <div class="dev-card">
+        <div class="dev-img-placeholder"></div>
+        <h4 class="mt-4 mb-1 fw-bold text-dark">ANVI</h4>
+        <p
+          class="text-muted small fw-semibold"
+          style="color: #4f46e5 !important"
+        >
+          Frontend & UI/UX
+        </p>
+        <p class="text-muted small mt-2">
+          Designs the sleek interfaces and ensures a seamless user experience.
+        </p>
+      </div>
+      <div class="dev-card">
+        <div class="dev-img-placeholder"></div>
+        <h4 class="mt-4 mb-1 fw-bold text-dark">MOHIT</h4>
+        <p
+          class="text-muted small fw-semibold"
+          style="color: #4f46e5 !important">
+         Resource Manager
+        </p>
+        <p class="text-muted small mt-2">
+          Collects and manages the academic materials, ensuring quality and relevance.
+        </p>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

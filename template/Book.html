@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="main_sec">
+        <div id="welcome">
+            <h1>E-Books</h1> <p>Your one-stop destination for all your academic needs!</p> </div>
+        <div class="home_img"><img src="{{url_for('static',filename='assets/home_img.png')}}" alt=""> </div>
+</section>  
+<div>
+    {% set semesters = [1, 2, 3, 4, 5, 6] %} 
+    {% for sem in semesters %}
+        {% set sem_books = books | selectattr("semester", "equalto", sem) | list %} 
+        {% if sem_books %}
+        <div class="hold">
+            <div class="place">{{ sem }}ST SEMESTER</div>
+            <div class="shell"> 
+                {% for book in sem_books %}
+                <div class="book" style="text-align: center; padding: 10px; display: flex; flex-direction: column; justify-content: space-between;">
+                    <img src="{{ url_for('static', filename='book_covers/' ~ book.cover_url) }}" alt="{{ book.title }} Cover" style="width: 100%; height: 180px; object-fit: cover; border-radius: 5px;">
+                    
+                    <p style="margin: 10px 0 5px 0; font-weight: bold; font-size: 16px;">{{ book.title }}</p>
+                    <p style="font-size: 12px; color: #555; line-height: 1.2; margin-bottom: 10px;">
+                        {% if book.description %}
+                            {{ book.description[:60] }}...
+                        {% else %}
+                            No description available.
+                        {% endif %}</p>
+                    <a href="{{ url_for('static', filename='ebook/' ~ book.file_url) }}" target="_blank" style="text-decoration: none; width: 100%;">
+                        <button style="width: 100%; cursor: pointer;">READ PDF</button></a>
+                </div>
+                {% endfor %} </div></div>{% endif %}{% endfor %}{% if not books %}
+        <div style="text-align: center; padding: 50px;">
+            <h3>No E-books available right now.</h3> <p>Admin is currently adding resources. Check back soon!</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

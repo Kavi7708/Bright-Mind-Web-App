@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="main_sec">
+        <div id="welcome">
+            <h1>E-Learning</h1>
+        </div>
+        <div class="home_img"><img src="{{url_for('static',filename='assets/undraw_programming_j1zw.svg')}}" alt="">
+        </div>
+</section>
+<section class="lecture" style="padding: 20px; max-width: 800px; margin: 0 auto;"> 
+    {% for video in videos %}
+    <a href="/video_player/{{ video.id }}" style="text-decoration: none; color: inherit;"> 
+        <div class="video" style="display: flex; align-items: center; padding: 20px; background-color: #ffffff; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); transition: transform 0.2s;">
+            <div class="tutorials" style="display: flex; align-items: center; width: 100%; gap: 25px;">
+                <span class="icon" style="flex-shrink: 0;">
+                    <img src="{{ url_for('static', filename='assets/youtube-tutorial.svg') }}" alt="Video">
+                </span>
+                <span class="information" style="display: flex; flex-direction: column; justify-content: center;"> 
+                    <h5 class="thumbnail" style="font-size: 20px; font-weight: 700; margin: 0 0 8px 0; color: #2d3748; font-family: 'Segoe UI', Roboto, sans-serif;">
+                        {{ video.title }}
+                    </h5>
+                    <p class="description" style="font-size: 15px; margin: 0; color: #718096; font-family: 'Segoe UI', Roboto, sans-serif; line-height: 1.5;">
+                        {{ video.description }}
+                    </p> 
+                </span>
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+</section>
+{% endblock %}

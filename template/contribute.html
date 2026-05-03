@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="admin-panel login-wrapper" style="min-height: 80vh; padding: 40px 20px;">
+    <!-- This is the main white box -->
+    <div class="box admin-login-card" style="max-width: 800px; width: 100%; margin: 0 auto; padding: 40px; position: relative;">
+        
+        <h1 style="color:var(--accent-primary); text-align: center; margin-bottom: 10px;">Contribute to Bright Mind</h1>
+        <p style="text-align:center; color:var(--text-secondary); margin-bottom:30px; font-size: 16px;">
+            Help the entire college community! Upload your notes, previous year papers, or syllabus to your Google Drive and share the public link with us. Our admin will review and publish it with your credits!
+        </p>
+        
+       
+        <div style="width: 100%; display: flex; justify-content: center; overflow: hidden; border-radius: 12px; border: 2px solid #e2e8f0; background: white; margin-bottom: 30px;">
+            <iframe src="https://forms.gle/CHa6XGCbyqAPMoN96" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+        </div>
+        
+        <div style="display: flex; justify-content: center; width: 100%;">
+            <a href="/" style="
+                background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); 
+                color: white; 
+                padding: 14px 40px; 
+                font-size: 16px; 
+                font-weight: 700; 
+                border-radius: 50px; /* Made it more pill-shaped for a modern look */
+                box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3); 
+                transition: transform 0.3s ease, box-shadow 0.3s ease; 
+                display: inline-flex; 
+                align-items: center; 
+                gap: 10px;
+                text-decoration: none;">
+                Back to Home Page
+            </a>
+        </div>
+
+    </div>
+</section>
+
+
+<style>
+    .admin-login-card a:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 25px rgba(99, 102, 241, 0.4) !important;
+    }
+</style>
+{% endblock %}

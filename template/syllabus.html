@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+  {%block content %}
+<section class="main_sec">
+        <div id="welcome">
+            <h1>Welcome to Bright Mind</h1>
+        </div>
+        <div class="home_img"><img src="{{url_for('static',filename='assets/wel.svg')}}" alt="">
+        </div>
+</section>
+<div class="services">
+  <h4 style=" font-size: 28px;
+    color: #fff700;text-align: center;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 5px;">SYLLABUS</h4>
+  {% for branch_name, branch_items in syllabuses|groupby('branch') %}
+  <div class="mech"> <h4>{{ branch_name | upper }}</h4>
+    {% for item in branch_items %}
+    <a href="/static/syllabus/{{ item.file_url }}" target="_blank">
+      <div class="syllabus">
+        <span><i class=" pdf fa-regular fa-file-pdf"></i></span>
+        <div>
+          <h5 class="mh">{{ item.category }} </h5>
+          <p class="sub">{{ item.branch | upper }}</p>
+        </div>
+        <span><i class="arrow fa-solid fa-angle-right"></i></span>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+  {% endfor %}
+</div>
+ {% endblock %}
+</body>
+</html>

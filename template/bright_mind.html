@@ -1,0 +1,120 @@
+{% extends "base.html" %} {% block content %}
+<section class="main_sec">
+  <div id="welcome">
+    <h1>Welcome to Bright Mind</h1>
+    <p>
+      Your one-stop destination for all your academic needs. Explore our
+      extensive collection of resources, including syllabi, past papers,
+      quizzes, e-books, notes, and videos. Whether you're a student looking for
+      study materials or an educator seeking to share knowledge, Bright Mind has
+      got you covered. Dive in and discover a world of learning at your
+      fingertips!
+    </p>
+  </div>
+  <div class="home_img">
+    <img src="{{url_for('static',filename='assets/home_img.png')}}" alt="" />
+  </div>
+</section>
+
+<div class="box">
+  <section class="two">
+    <h2>SERVICES</h2>
+    <div class="container">
+      <a href="/syllabus">
+        <div style="background-color: #96d4d4" class="card">
+          <img
+            src="{{ url_for('static', filename='assets/syllabus.svg') }}"
+            alt=""
+          />
+          <h6 class="subtitle">SYLLABUS</h6>
+        </div>
+      </a>
+      <a href="/paper">
+        <div style="background-color: rgb(115, 255, 0)" class="card">
+          <img
+            src="{{ url_for('static', filename='assets/paper.svg') }}"
+            alt=""
+          />
+          <h6 class="subtitle">PAPER</h6>
+        </div>
+      </a>
+    <a href="/contribute">
+    <div style="background-color: rgb(255, 0, 153);" class="card">
+        <img src="{{ url_for('static', filename='assets/upload_file.svg') }}" alt="">
+        <h6 class="subtitle">CONTRIBUTE</h6>
+    </div>
+</a>
+
+      <a href="/book">
+        <div style="background-color: #fff4a3" class="card">
+          <img
+            src="{{ url_for('static', filename='assets/BOOKS.svg') }}"
+            alt=""
+          />
+          <h6 class="subtitle">BOOK</h6>
+        </div>
+      </a>
+      <a href="/notes">
+        <div style="background-color: #04aa6d" class="card">
+          <img
+            src="{{ url_for('static', filename='assets/undraw_key-points.svg') }}"
+            alt=""
+          />
+          <h6 class="subtitle">NOTES</h6>
+        </div>
+      </a>
+      <a href="/video">
+        <div style="background-color: #a3d2ff" class="card">
+          <img
+            src="{{ url_for('static', filename='assets/undraw_video-streaming.svg') }}"
+            alt=""
+          />
+          <h6 class="subtitle">VIDEO</h6>
+        </div>
+      </a>
+    </div>
+  </section>
+  <section class="three">
+    <h6>RECENTLY ADDED</h6>
+    <marquee
+      behavior="scroll"
+      direction="left"
+      scrollamount="5"
+      onmouseover="this.stop()"
+      onmouseout="this.start()"
+    >
+      <div class="box2">
+        {% for item in recent_items %}
+        <div class="recent" style="min-width: 250px">
+          <p class="event">
+            <img
+              src="http://gpnilokheri.ac.in/assets/img/new.gif"
+              height="40px"
+              width="40px"
+              alt=""
+            />
+            New {{ item.category }} Added!
+          </p>
+          <p
+            style="
+              padding: 5px;
+              font-family: cambria;
+              font-size: 14px;
+              font-weight: bold;
+              overflow: hidden;
+            "
+          >
+            {{ item.title }}
+          </p>
+        </div>
+        {% endfor %} {% if not recent_items %}
+        <div class="recent">
+          <p style="padding: 10px">More resources coming soon...</p>
+        </div>
+        {% endif %}
+      </div>
+    </marquee>
+  </section>
+
+  {% endblock %}
+</div>
