@@ -10,8 +10,6 @@ with open('static/config.json', 'r') as C:
 
 app = Flask(__name__, template_folder='template')
 app.config['SECRET_KEY'] = 'supersecretkey'
-
-# 2. Database Connection (XAMPP MySQL)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/Bright_Mind'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
@@ -150,6 +148,25 @@ def home():
     for i in ebook: recent_items.append({'title': i.title, 'category': 'Ebook'})
     
     return render_template('bright_mind.html', recent_items=recent_items, params=params)
+
+@app.route('/add_video', methods=['POST'])
+def add_video():
+    if 'user' in session and session['user'] == params['admin_user']:
+        title = request.form.get('title')
+        description = request.form.get('description')
+        url = request.form.get('url')
+        
+        if title and description and url:
+            # Database mein naya video save karein
+            new_video = Video(title=title, description=description, url=url)
+            db.session.add(new_video)
+            db.session.commit()
+            flash("Video added successfully!", "success")
+        else:
+            flash("Sare fields bharna zaroori hai!", "danger")
+            
+        return redirect('/dashboard')
+    return redirect('/login')
 
 @app.route('/admin/upload', methods=['POST'])
 def admin_upload():
